@@ -54,14 +54,13 @@ namespace KalenderUndTerminverwaltung
                         }
                     }
 
-                    if (Kalender.MonatUndJahrAktuell() && tag == DateTime.Today.Day)
-                    {
-                        Console.ForegroundColor = ConsoleColor.Red;
-                    }
-
                     if (tag == Termine.TagHeutigerTermine && Kalender.MonatUndJahrAktuell())
                     {
                         Console.ForegroundColor = ConsoleColor.Cyan;
+                    }
+                    else if (tag == DateTime.Today.Day && Kalender.MonatUndJahrAktuell())
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
                     }
 
                     if (tag < 10)

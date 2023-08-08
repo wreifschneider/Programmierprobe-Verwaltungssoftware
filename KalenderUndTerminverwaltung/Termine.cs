@@ -79,7 +79,21 @@ namespace KalenderUndTerminverwaltung
             {
                 Console.Clear();
                 Console.SetCursorPosition(20, 1);
-                Console.Write("Soll wirklich dieser Termin gelöscht werden? (j/n)");
+
+                string aktion;
+                switch (auswahl)
+                {
+                    case 'b':
+                        aktion = "bearbeitet";
+                        break;
+                    case 'l':
+                        aktion = "gelöscht";
+                        break;
+                    default:
+                        aktion = string.Empty;
+                        break;
+                }
+                Console.Write($"Soll wirklich dieser Termin {aktion} werden? (j/n)");
                 Console.SetCursorPosition(30, 3);
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write($"ID: {index:00} | {termine[index]}");
