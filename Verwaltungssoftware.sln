@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33815.320
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KalenderUndTerminverwaltung", "KalenderUndTerminverwaltung\KalenderUndTerminverwaltung.csproj", "{FA900606-6F69-4CB5-8D79-0D76F22B7C37}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FA900606-6F69-4CB5-8D79-0D76F22B7C37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA900606-6F69-4CB5-8D79-0D76F22B7C37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA900606-6F69-4CB5-8D79-0D76F22B7C37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA900606-6F69-4CB5-8D79-0D76F22B7C37}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {21E788E9-AEA1-4EAA-85E2-7D58170BBA8B}
+	EndGlobalSection
+EndGlobal
