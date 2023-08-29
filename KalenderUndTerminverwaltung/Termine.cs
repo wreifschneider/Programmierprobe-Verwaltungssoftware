@@ -10,7 +10,7 @@ namespace KalenderUndTerminverwaltung
     internal class Termine
     {
         // Eine List für alle Termine
-        static List<string> termine = new();
+        static List<string> termineListe = new();
 
         // In den Listen werden die ausgelesenen Tage für den jeweiligen Monat eingespeichert.
         // Falls ein Termin am aktuellen Tag statfindet, wird er im Integer abgespeichert.
@@ -24,6 +24,9 @@ namespace KalenderUndTerminverwaltung
         public static List<int> TageVergangernerTermine { get => tageVergangernerTermine; set => tageVergangernerTermine = value; }
         public static List<int> TageZukuenftigerTermine { get => tageZukuenftigerTermine; set => tageZukuenftigerTermine = value; }
         public static int TagHeutigerTermine { get => tagHeutigerTermine; set => tagHeutigerTermine = value; }
+        public static List<string> TermineListe { get => termineListe; set => termineListe = value; }
+
+
 
         // Prüft ob die Eingabe eine Zahl ist.
         public static bool TermineEingabeDatumIstZahl(string? eingabe)
@@ -47,90 +50,32 @@ namespace KalenderUndTerminverwaltung
         // String wird in die "termine" List hinzugefügt.
         public static void TerminHinzufuegen(string eingabe)
         {
-            termine.Add(eingabe);
+            TermineListe.Add(eingabe);
             TermineSortierung();
         }
 
         // Ein Element der "termine" List wird überschrieben und in der Datei abgespeichert.
         public static void TerminBearbeiten(int index, string ausgabeMenue)
         {
-            termine[index] = ausgabeMenue;
+            TermineListe[index] = ausgabeMenue;
             TermineSortierung();
         }
 
-        static void TerminLoeschung(int index)
+        internal static void TerminLoeschung(int index)
         {
-            termine.RemoveAt(index);
+            TermineListe.RemoveAt(index);
             TermineSortierung();
         }
 
         static void TermineSortierung()
         {
-            termine = termine.OrderBy(x => int.Parse($"{x[6]}{x[7]}{x[8]}{x[9]}"))
+            TermineListe = TermineListe.OrderBy(x => int.Parse($"{x[6]}{x[7]}{x[8]}{x[9]}"))
             .ThenBy(x => int.Parse($"{x[3]}{x[4]}"))
             .ThenBy(x => int.Parse($"{x[0]}{x[1]}")).ToList();
-            File.WriteAllLines(pfad, termine);
+            File.WriteAllLines(pfad, TermineListe);
         }
 
-        // Ein bestimmtes Element aus der "termine" List wird entfernt.
-        public static void TerminIDBestaetigung(int index, char auswahl)
-        {
-            do
-            {
-                Console.Clear();
-                Console.SetCursorPosition(20, 1);
 
-                string aktion;
-                switch (auswahl)
-                {
-                    case 'b':
-                        aktion = "bearbeitet";
-                        break;
-                    case 'l':
-                        aktion = "gelöscht";
-                        break;
-                    default:
-                        aktion = string.Empty;
-                        break;
-                }
-                Console.Write($"Soll wirklich dieser Termin {aktion} werden? (j/n)");
-                Console.SetCursorPosition(30, 3);
-                Console.ForegroundColor = ConsoleColor.Yellow;
-                Console.Write($"ID: {index:00} | {termine[index]}");
-                Console.ResetColor();
-                Console.SetCursorPosition(11, 4);
-                Console.Write(":");
-                Console.SetCursorPosition(13, 4);
-                string? eingabe = Console.ReadLine();
-
-                if (eingabe != null) eingabe = eingabe.ToLower().Trim();
-                switch (eingabe)
-                {
-                    case "j":
-                        switch (auswahl)
-                        {
-                            case 'b':
-                                KalenderUndTermineOberflaeche.TermineEingabeMenue(index, 'b');
-                                break;
-                            case 'l':
-                                TerminLoeschung(index);
-                                break;
-                            default:
-                                break;
-                        }
-                        return;
-                    case "n":
-                        return;
-                    default:
-                        Console.SetCursorPosition(22, 8);
-                        Console.ForegroundColor = ConsoleColor.Red;
-                        Console.Write("Falsche Eingabe");
-                        Console.ResetColor();
-                        Thread.Sleep(1000);
-                        break;
-                }
-            } while (true);
-        }
 
         // Beschreibt die "termine" List mit Daten aus der Datei. 
         public static void DateiZuListe()
@@ -138,7 +83,7 @@ namespace KalenderUndTerminverwaltung
             if (File.Exists(pfad))
             {
                 string[] tmp = File.ReadAllLines(pfad);
-                termine = tmp.ToList();
+                TermineListe = tmp.ToList();
             }
             else
             {
@@ -149,14 +94,14 @@ namespace KalenderUndTerminverwaltung
         // Gibt die anzahl der Elemente in der "termine" List wieder.
         public static int ListenLaenge()
         {
-            return termine.Count;
+            return TermineListe.Count;
         }
 
         // Gibt nur die Termine aus, die am ausgewählten Monat stattfinden.
         public static void TermineListeAusgabe(bool mitID)
         {
             int index = 0;
-            foreach (string termin in termine)
+            foreach (string termin in TermineListe)
             {
                 // int jahr = 10 * Convert.ToInt32(termin[8] - '0') + Convert.ToInt32(termin[9] - '0') + 2000;
                 int jahr = Convert.ToInt32($"{termin[6]}{termin[7]}{termin[8]}{termin[9]}");
@@ -217,7 +162,7 @@ namespace KalenderUndTerminverwaltung
             tagHeutigerTermine = 0;
             tageVergangernerTermine.Clear();
             tageZukuenftigerTermine.Clear();
-            foreach (string termin in termine)
+            foreach (string termin in TermineListe)
             {
                 //int jahr = 10 * Convert.ToInt32(termin[8] - '0') + Convert.ToInt32(termin[9] - '0') + 2000;
                 // $"{termin[6]}{termin[7]}{termin[8]}{termin[9]}") // Zuspät bemerkt, dass es auch so gehen könnte (hatte keine Zeit zum realisierren und testen)

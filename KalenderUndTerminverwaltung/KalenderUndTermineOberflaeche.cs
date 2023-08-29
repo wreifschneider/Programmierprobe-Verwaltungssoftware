@@ -157,9 +157,6 @@ namespace KalenderUndTerminverwaltung
                         break;
                     case ConsoleKey.X:
                         return;
-                    default:
-                        Console.WriteLine("404 somethimhg get wrong");
-                        break;
                 }
             } while (true);
         }
@@ -199,9 +196,6 @@ namespace KalenderUndTerminverwaltung
                         break;
                     case ConsoleKey.Z:
                         return;
-                    default:
-                        Console.WriteLine("404 something get wrong");
-                        break;
                 }
 
             } while (true);
@@ -224,11 +218,11 @@ namespace KalenderUndTerminverwaltung
             {
                 if (bearbeiten)
                 {
-                    Termine.TerminIDBestaetigung(eingabeID, 'b');
+                    TerminIDBestaetigung(eingabeID, 'b');
                 }
                 else
                 {
-                    Termine.TerminIDBestaetigung(eingabeID, 'l');
+                    TerminIDBestaetigung(eingabeID, 'l');
                 }
             }
             else
@@ -237,6 +231,53 @@ namespace KalenderUndTerminverwaltung
                 HilfeText(5, 3);
                 FalscheEingabe(22, 8, 3);
             }
+        }
+
+        // Ein bestimmtes Element aus der "termine" List wird entfernt.
+        public static void TerminIDBestaetigung(int index, char auswahl)
+        {
+            do
+            {
+                Console.CursorVisible = false;
+                Console.Clear();
+                Console.SetCursorPosition(20, 1);
+
+                string aktion;
+                switch (auswahl)
+                {
+                    case 'b':
+                        aktion = "bearbeitet";
+                        break;
+                    case 'l':
+                        aktion = "gelöscht";
+                        break;
+                    default:
+                        aktion = string.Empty;
+                        break;
+                }
+                Console.Write($"Soll wirklich dieser Termin {aktion} werden? <j><n>");
+                Console.SetCursorPosition(30, 3);
+                Console.Write($"{yellow}ID: {index:00} | {Termine.TermineListe[index]}{reset}");
+
+                switch (Console.ReadKey(true).Key)
+                {
+                    case ConsoleKey.J:
+                        switch (auswahl)
+                        {
+                            case 'b':
+                                TermineEingabeMenue(index, 'b');
+                                break;
+                            case 'l':
+                                Termine.TerminLoeschung(index);
+                                break;
+                            default:
+                                break;
+                        }
+                        return;
+                    case ConsoleKey.N:
+                        return;
+                }
+            } while (true);
         }
 
         // Menü mit ID-Ausgabe wird jeweils gebraucht für die Löschung oder Bearbeitung von Terminen (Bearbeitung hat 2 Menüs vereint)
@@ -276,11 +317,17 @@ namespace KalenderUndTerminverwaltung
             falscheEingabe = true;
             int stunden;
             int minuten;
-            
+
+
+            Console.SetCursorPosition(9, 12);
+            Console.Write("\n Uhrzeit:   :  ");
+
+            Console.SetCursorPosition(10, 13);
             stunden = IntPruefer();
 
             if (stunden >= 0 && stunden <= 23)
             {
+                Console.SetCursorPosition(13, 13);
                 minuten = IntPruefer();
 
                 if (minuten >= 0 && minuten < 60)
@@ -303,44 +350,35 @@ namespace KalenderUndTerminverwaltung
                 {
                     FalscheEingabe(18, 14, 1);
                 }
-                falscheEingabe = false;
+                falscheEingabe = true;
                 Console.Clear();
                 KalenderAusdruck();
 
                 if (eingabe == null)
                 {
-                    Console.Write("\nTag: ");
+                    Console.Write("\n\n Tag: ");
 
                     eingabe = Console.ReadLine();
 
                     eingabe ??= string.Empty;
 
-                    if (Termine.TermineEingabeDatumIstZahl(eingabe) && eingabe.Length == 1)
+                    if (Termine.TermineEingabeDatumIstZahl(eingabe))
                     {
-                        eingabe = $"0{eingabe}{Kalender.MonatJahrAlsString()}";
-                    }
-                    else if (Termine.TermineEingabeDatumIstZahl(eingabe) && eingabe.Length == 2 &&
-                        Convert.ToInt32($"{eingabe[0]}{eingabe[1]}") <= DateTime.DaysInMonth(Kalender.Jahr, Kalender.Monat) ||
-                        Termine.TermineEingabeDatumIstZahl(eingabe) && eingabe.Length == 2 && eingabe[0] == '0')
-                    {
-                        eingabe += Kalender.MonatJahrAlsString();
-                    }
+                        eingabe = eingabe.PadLeft(2, '0') + Kalender.MonatJahrAlsString();
 
-                    else
-                    {
-                        eingabe = null;
-                        falscheEingabe = true;
+                        if (Convert.ToInt32($"{eingabe[0]}{eingabe[1]}") <= DateTime.DaysInMonth(Kalender.Jahr, Kalender.Monat))
+                            falscheEingabe = false;
+                        else
+                            eingabe = null;
                     }
                 }
                 else
                 {
                     Console.WriteLine($"\n{eingabe}");
                 }
+
                 if (!falscheEingabe)
                 {
-                    Console.Write("\nUhrzeit:   :  ");
-
-                    Console.SetCursorPosition(9, 13);
                     eingabe += UhrzeitEingabe();
                 }
 
