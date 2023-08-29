@@ -270,9 +270,9 @@ namespace KalenderUndTerminverwaltung
             } while (true);
         }
 
-        private static string UhrzeitEingabe(string eingabe)
+        private static string UhrzeitEingabe()
         {
-
+            string eingabe = String.Empty;
             falscheEingabe = true;
             int stunden;
             int minuten;
@@ -285,7 +285,7 @@ namespace KalenderUndTerminverwaltung
 
                 if (minuten >= 0 && minuten < 60)
                 {
-                    eingabe += $" {stunden:00}:{minuten:00}";
+                    eingabe = $" {stunden:00}:{minuten:00}";
                     falscheEingabe = false;
                 }  
                 
@@ -341,7 +341,7 @@ namespace KalenderUndTerminverwaltung
                     Console.Write("\nUhrzeit:   :  ");
 
                     Console.SetCursorPosition(9, 13);
-                    eingabe = UhrzeitEingabe(eingabe);
+                    eingabe += UhrzeitEingabe();
                 }
 
             } while (falscheEingabe);
