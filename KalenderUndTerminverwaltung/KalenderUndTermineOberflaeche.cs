@@ -11,8 +11,8 @@ namespace KalenderUndTerminverwaltung
         // Felder
 
         private static bool falscheEingabe = false;
-        private static string blue = "\u001b[34m", red = "\u001b[31m", green = "\u001b[32m", yellow = "\u001b[33m",
-            magenta = "\u001b[35m", cyan = "\u001b[36m", darkGray = "\u001b[90m", reset = "\u001b[0m";
+        private static readonly string blue = "\u001b[34m", red = "\u001b[31m", green = "\u001b[32m", yellow = "\u001b[33m",
+            cyan = "\u001b[36m", darkGray = "\u001b[90m", reset = "\u001b[0m"; //magenta = "\u001b[35m"
 
         // Kalender des ausgewählten Monats wird generiert 
         public static void KalenderAusdruck()
@@ -96,6 +96,7 @@ namespace KalenderUndTerminverwaltung
 
                 if (eingabeMonat > 0 && eingabeMonat <= 12)
                 {
+                    Console.SetCursorPosition(14, 13);
                     Kalender.Monat = eingabeMonat;
 
                     eingabeJahr = IntPruefer();
